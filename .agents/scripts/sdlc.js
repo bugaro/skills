@@ -189,6 +189,18 @@ switch (command) {
       writeState(transitionState);
       console.log(`[SUCCESS] ${transitionReason}`);
       console.log(`Transitioned to next phase: "${nextPhase}"`);
+
+      // Print warning for new session phases
+      if (nextPhase === "06-refactor" || nextPhase === "08-verify-qa") {
+        console.log("\n" + "=".repeat(65));
+        console.log(`⚠️  NOTICE: A NEW SESSION IS REQUIRED FOR PHASE "${nextPhase}"  ⚠️`);
+        console.log("=".repeat(65));
+        console.log("To ensure optimal performance and keep the AI focus clean,");
+        console.log("please start a fresh conversation or fork this one:");
+        console.log(`👉  In CLI: run '/fork ${nextPhase}-session'`);
+        console.log("👉  In Desktop: click 'New Conversation' on the left sidebar");
+        console.log("=".repeat(65) + "\n");
+      }
     } else {
       console.error(`[FAILURE] Transition blocked:`);
       console.error(transitionReason);

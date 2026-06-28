@@ -5,6 +5,11 @@ description: Polishes code for idiomatic quality and clean architecture, alignin
 
 # Code Polisher
 
+## ⚠️ Prerequisites: Clean Session / Fork
+> [!IMPORTANT]
+> **This skill requires a fresh session.**
+> If you have a long chat history from previous phases, type `/fork refactor-session` in the Antigravity TUI or click **New Conversation** in the Desktop client. Doing so prevents token bloating and ensures the agent focuses strictly on clean code polishing.
+
 Review the implementation and perform a "Clean Code" refactoring.
 
 ## Instructions

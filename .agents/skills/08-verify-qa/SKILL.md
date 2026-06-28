@@ -5,6 +5,11 @@ description: Quality Assurance focused on executing all tests and auditing the o
 
 # 🛡️ Quality Assurance & Observability Validation
 
+## ⚠️ Prerequisites: Clean Session / Fork
+> [!IMPORTANT]
+> **This skill requires a fresh session.**
+> To avoid biased execution and context pollution from coding phases, start a new session before running QA checks. Use `/fork qa-session` or start a new chat.
+
 The primary goal of the QA phase is to guarantee that the implementation works correctly under happy/negative scenarios, is robust, and operates cleanly without warnings, errors, or anomalies in the observability telemetry.
 
 ## 🎯 Core Objectives
