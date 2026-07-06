@@ -12,7 +12,7 @@ Write the implementation code that satisfies the provided test suite.
 2. **DDD Tactics**: Use Aggregates, Value Objects, and Domain Services. No Anemic Models.
 3. **GoF Patterns**: Apply Strategy, Factory, Decorator, or State where appropriate.
 4. **Ubiquitous Language**: Strictly use terms from the ubiquitous language glossary.
-5. **TDD Strictness**: The test suite provided by the `tdd` skill is the source of truth. Implement code to pass the tests; do NOT modify the tests to fit the implementation.
+5. **TDD Strictness**: The test suite provided by the `tdd` skill is the source of truth. Implement code to pass the tests; do NOT modify the tests to fit the implementation. If basic entities or value objects were implemented during the TDD phase to enable test compilation, build upon and refine them rather than rewriting them from scratch.
 6. **Environment Configuration (Merged from update-env)**:
     - If your implementation introduces new external dependencies, ports, or config values, extract them into local `.env` and `.env.example` files in the service directory.
     - Document every new configuration variable in the local `README.md` and update the central backend configuration templates.
