@@ -17,6 +17,7 @@ Review the implementation and perform a "Clean Code" refactoring.
 - **Interface & Type Reusability**: Extract duplicate models or types into a single source of truth (e.g., `interfaces.ts` or `entities.ts`) and import them.
 - **Eliminate Magic Values**: Replace hardcoded strings and numbers with Enums or Constants.
 - **Clean Up Smell**: Remove unused variables, imports, and dead code.
+- **Remove Lax Defaults & Silent Fallbacks**: Audit the code for fallback values or default parameters that silently mask errors. Ensure that missing inputs or database/internal integration failures throw explicit errors instead of resolving to arbitrary defaults (fail-fast principle).
 - **Infrastructure Alignment (Merged from update-env)**:
     - If the service has a `docker-compose.yml` file, register it under the `include` section of the main central `infrastructure/docker-compose.yml`.
     - Ensure all `docker-compose.yml` environment configurations use Bash-style string interpolation with safe defaults (e.g., `${DB_PORT:-5432}`).
