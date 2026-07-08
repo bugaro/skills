@@ -1,5 +1,5 @@
 ---
-name: 09-fix-bugs
+name: 08-fix-bugs
 description: High-quality bug fixing based on QA failure reports, verifying against unit, integration, E2E, and observability.
 ---
 
@@ -34,7 +34,7 @@ This skill is designed to ingest failure reports from the QA phase, systematical
 
 ### 4. Status Update
 - **Bug Finalization**: Prepend `[FIXED] ` to the title inside the `BUG-*.md` file.
-- **Issue Transition**: Change the `[FAILED]` or `[TODO]` status to `[STAGED]` in the issue file's frontmatter.
+- **Task Transition**: Change the task status (e.g., `status: todo` or `status: failed`) to `status: staged` in the PRD file's task list.
 - **Reporting**: Detail the fix applied, tests run, and log audit confirmation.
 
 ---
@@ -43,7 +43,7 @@ This skill is designed to ingest failure reports from the QA phase, systematical
 
 When the fix is **READY**:
 1. Output "FIXED" clearly at the end of your report.
-2. Signal that the issue is ready for a second QA pass.
+2. Signal that the task is ready for a second QA pass.
 
 ## Limitations & Safeguards
 - **Strict Scope Limit**: You are forbidden from modifying files unrelated to the reported bug. Refactoring of surrounding code is prohibited.

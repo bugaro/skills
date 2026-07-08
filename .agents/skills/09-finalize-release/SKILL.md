@@ -1,6 +1,6 @@
 ---
-name: 10-finalize-release
-description: Synchronizes documentation, marks PRD/issues as DONE, and generates git commits.
+name: 09-finalize-release
+description: Synchronizes documentation, marks PRD status and implementation tasks as DONE, and generates git commits.
 ---
 
 # Documentation & Pipeline Finalization
@@ -16,16 +16,12 @@ You are a Technical Writer and Release Engineer. Your goal is to merge architect
 - **Service discovery**: Keep `hosts.md` in the root folder accurate with running services and their port assignments.
 - **Readmes**: Keep the root `README.md` and individual `services/*/README.md` files updated with correct setup and execution instructions.
 
-### 2. Transition PRD & Issues to DONE
+### 2. Transition PRD & Tasks to DONE
 - Locate the related Product Requirements Document in `docs/PRD/prd-*.md`. Update the frontmatter status:
     ```yaml
     status: done
     ```
-- Locate all the related issue files in `docs/issues/<feature-context>/*.md`. Update their frontmatter statuses:
-    ```yaml
-    status: done
-    ```
-- Check off any corresponding task items in the PRD's `TASK_LIST` checkbox section.
+- Update the status of all implementation tasks listed in the PRD to `status: done` and check off their checkmarks (e.g. `[x]`).
 
 ### 3. Git Commit Execution
 Once all documents are updated and statuses are set to `done`, perform a git commit:
@@ -38,8 +34,8 @@ Once all documents are updated and statuses are set to `done`, perform a git com
 3. Run the commit command. Do not push unless explicitly instructed by the user.
 
 ## Limitations & Safeguards
-- **Incomplete Issue Block**: You are strictly prohibited from performing git commits if any issues associated with the feature are still marked as `status: todo` or `status: in_progress`. Every issue MUST be updated to `status: done` first.
+- **Incomplete Task Block**: You are strictly prohibited from performing git commits if any tasks in the PRD associated with the feature are still marked as `status: todo` or `status: in_progress`. Every task MUST be updated to `status: done` first.
 - **Forbidden Force Push**: Do NOT attempt to run `git push --force` or modify main branch protection rules.
 
 ## Pipeline Transition & Release
-- To complete the release, execute `node .agents/scripts/sdlc.js release` from the workspace root. This will automatically update PRD and Issue files, stage all changes, format a Conventional Commit, and create the local git commit, resetting the SDLC pipeline to idle.
+- To complete the release, execute `node .agents/scripts/sdlc.js release` from the workspace root. This will automatically update the PRD file and its tasks, stage all changes, format a Conventional Commit, and create the local git commit, resetting the SDLC pipeline to idle.

@@ -1,5 +1,5 @@
 ---
-name: 05-implement
+name: 04-implement
 description: High-quality implementation using GoF patterns and DDD tactics, managing environment configs.
 ---
 
@@ -21,7 +21,7 @@ Write the implementation code that satisfies the provided test suite.
 ## Limitations & Safeguards
 - **No Raw Errors**: Never throw a raw `Error` object. You must map internal database errors or validation issues directly into `DomainError` subclasses defined in `docs/coding_standards.md`.
 - **Environment Isolation**: Never store secrets (like database passwords, encryption keys) directly in code or config files. Use environment variables retrieved via `process.env`.
-- **TDD Compliance**: Do NOT add features or fields that are not covered by tests in the `04-write-tdd` suite.
+- **TDD Compliance**: Do NOT add features or fields that are not covered by tests in the `03-write-tdd` suite.
 
 ## Pipeline Transition
 - When the implementation is ready, you MUST execute `node .agents/scripts/sdlc.js transition` from the workspace root to validate and transition to the next phase.

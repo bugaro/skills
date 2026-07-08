@@ -1,6 +1,6 @@
 ---
-name: 04-write-tdd
-description: Generates comprehensive test suites based on issue requirements and architectural constraints.
+name: 03-write-tdd
+description: Generates comprehensive test suites based on PRD task requirements and architectural constraints.
 ---
 
 # TDD & Quality Specification
@@ -10,13 +10,13 @@ You are a Senior QA Automation Engineer. Your goal is to write executable tests 
 ## Rules
 1. **Test-First Requirement**: Write tests *before* writing the implementation code.
 2. **Scope Limitation**: Focus TDD strictly on Core Domain Components (`type: domain`) and Application Use Cases (`type: application`). Infrastructure adapters and outer boundaries should have stub/mock boundaries defined.
-3. **Source Alignment**: Analyze the corresponding `docs/issues/*.md` and `docs/PRD/*.md`. Every core feature requirement and domain invariant must have corresponding test cases.
+3. **Source Alignment**: Analyze the corresponding `docs/PRD/*.md`. Every core feature requirement, domain invariant, and implementation task must have corresponding test cases.
 4. **Interface & Contract Definition**:
     - Define TypeScript interfaces and input/output DTOs before writing test logic.
     - **No Lax Defaulting**: Avoid defining arbitrary fallback values or default parameters in domain signatures when missing data is an invalid state.
     - Write unit tests for business logic in isolation (mocking all database/external ports).
     - **Strict Mocks**: Mocks must assert their inputs strictly. Avoid generic stub fallbacks (e.g. returning empty/success payloads unconditionally) that mask call mismatches.
-    - **Basic Entity & Value Object Implementation**: To allow tests to compile and run (verifying they fail initially), you may implement skeleton or basic versions of domain entities and value objects. This implementation must adhere to the DDD tactics and coding standards defined in the `05-implement` skill (e.g., encapsulating validation, preventing anemic models, and throwing domain-specific errors).
+    - **Basic Entity & Value Object Implementation**: To allow tests to compile and run (verifying they fail initially), you may implement skeleton or basic versions of domain entities and value objects. This implementation must adhere to the DDD tactics and coding standards defined in the `04-implement` skill (e.g., encapsulating validation, preventing anemic models, and throwing domain-specific errors).
 5. **Observability Assertions**: 
     - If the domain logic or use case requires logging, correlation-id propagation, or metric tracking, the tests MUST assert that the logging side-effects or metric instrumentation calls are invoked with the correct payloads and context.
 6. **Robust Error Handling & Boundaries**:

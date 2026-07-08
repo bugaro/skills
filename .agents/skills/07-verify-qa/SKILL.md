@@ -1,5 +1,5 @@
 ---
-name: 08-verify-qa
+name: 07-verify-qa
 description: Quality Assurance focused on executing all tests and auditing the observability stack (logs, metrics, tracing) for anomalies.
 ---
 

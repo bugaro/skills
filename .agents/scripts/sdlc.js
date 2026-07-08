@@ -34,14 +34,13 @@ if (!command) {
 const PHASES = [
   "01-brainstorm",
   "02-draft-prd",
-  "03-decompose-issues",
-  "04-write-tdd",
-  "05-implement",
-  "06-refactor",
-  "07-write-e2e",
-  "08-verify-qa",
-  "09-fix-bugs",
-  "10-finalize-release"
+  "03-write-tdd",
+  "04-implement",
+  "05-refactor",
+  "06-write-e2e",
+  "07-verify-qa",
+  "08-fix-bugs",
+  "09-finalize-release"
 ];
 
 switch (command) {
@@ -90,11 +89,11 @@ switch (command) {
           const files = fs.readdirSync(prdDir).filter(f => f.startsWith('prd-') && f.endsWith('.md'));
           if (files.length > 0) {
             const content = fs.readFileSync(path.join(prdDir, files[0]), 'utf8');
-            if (content.includes('status:')) {
+            if (content.includes('status:') && (content.includes('Implementation Tasks') || content.includes('TASK-') || content.includes('TASK_LIST'))) {
               success = true;
-              transitionReason = `PRD file matches spec: ${files[0]}`;
+              transitionReason = `PRD file matches spec (including implementation tasks): ${files[0]}`;
             } else {
-              transitionReason = "Error: PRD file is missing frontmatter status metadata.";
+              transitionReason = "Error: PRD file is missing frontmatter status metadata or implementation tasks section.";
             }
           } else {
             transitionReason = "Error: No docs/PRD/prd-*.md file found.";
@@ -102,28 +101,7 @@ switch (command) {
         } else {
           transitionReason = "Error: docs/PRD directory does not exist.";
         }
-      } else if (transitionState.phase === "03-decompose-issues") {
-        const issuesDir = path.join(WORKSPACE_DIR, 'docs/issues');
-        if (fs.existsSync(issuesDir)) {
-          const subdirs = fs.readdirSync(issuesDir);
-          let issueCount = 0;
-          for (const s of subdirs) {
-            const fullPath = path.join(issuesDir, s);
-            if (fs.statSync(fullPath).isDirectory()) {
-              const files = fs.readdirSync(fullPath).filter(f => f.endsWith('.md'));
-              issueCount += files.length;
-            }
-          }
-          if (issueCount > 0) {
-            success = true;
-            transitionReason = `Decomposed issues found: ${issueCount} issues.`;
-          } else {
-            transitionReason = "Error: No issue markdown files found in subdirectories of docs/issues/.";
-          }
-        } else {
-          transitionReason = "Error: docs/issues/ directory does not exist.";
-        }
-      } else if (transitionState.phase === "04-write-tdd") {
+      } else if (transitionState.phase === "03-write-tdd") {
         console.log("Checking TypeScript compilation of tests...");
         try {
           execSync("npx tsc --noEmit", { cwd: WORKSPACE_DIR, stdio: 'ignore' });
@@ -139,7 +117,7 @@ switch (command) {
             transitionReason = "Error: Tests not found or typescript compilation failed.";
           }
         }
-      } else if (transitionState.phase === "05-implement") {
+      } else if (transitionState.phase === "04-implement") {
         console.log("Running unit/integration tests...");
         try {
           execSync("npm run test:unit -- --run || npm test -- --run", { cwd: WORKSPACE_DIR, stdio: 'ignore' });
@@ -150,7 +128,7 @@ switch (command) {
           success = true;
           transitionReason = "Implementation structure verified.";
         }
-      } else if (transitionState.phase === "06-refactor") {
+      } else if (transitionState.phase === "05-refactor") {
         console.log("Running post-refactor checks...");
         try {
           execSync("npm run test:unit -- --run || npm test -- --run", { cwd: WORKSPACE_DIR, stdio: 'ignore' });
@@ -160,10 +138,10 @@ switch (command) {
           success = true;
           transitionReason = "Refactored structure verified.";
         }
-      } else if (transitionState.phase === "07-write-e2e") {
+      } else if (transitionState.phase === "06-write-e2e") {
         success = true;
         transitionReason = "E2E test files located.";
-      } else if (transitionState.phase === "09-fix-bugs") {
+      } else if (transitionState.phase === "08-fix-bugs") {
         success = true;
         transitionReason = "Fixes successfully pass TDD suites.";
       } else {
@@ -176,8 +154,8 @@ switch (command) {
     if (success) {
       const currentIdx = PHASES.indexOf(transitionState.phase);
       let nextPhase = PHASES[currentIdx + 1];
-      if (transitionState.phase === "09-fix-bugs") {
-        nextPhase = "10-finalize-release";
+      if (transitionState.phase === "08-fix-bugs") {
+        nextPhase = "09-finalize-release";
       }
       transitionState.history.push({
         phase: transitionState.phase,
@@ -191,7 +169,7 @@ switch (command) {
       console.log(`Transitioned to next phase: "${nextPhase}"`);
 
       // Print warning for new session phases
-      if (nextPhase === "06-refactor" || nextPhase === "08-verify-qa") {
+      if (nextPhase === "05-refactor" || nextPhase === "07-verify-qa") {
         console.log("\n" + "=".repeat(65));
         console.log(`⚠️  NOTICE: A NEW SESSION IS REQUIRED FOR PHASE "${nextPhase}"  ⚠️`);
         console.log("=".repeat(65));
@@ -210,7 +188,7 @@ switch (command) {
 
   case "qa-run":
     const qaState = readState();
-    if (qaState.phase !== "08-verify-qa" && qaState.phase !== "09-fix-bugs") {
+    if (qaState.phase !== "07-verify-qa" && qaState.phase !== "08-fix-bugs") {
       console.error(`Error: qa-run is only allowed in verify-qa or fix-bugs phase. Current phase: ${qaState.phase}`);
       process.exit(1);
     }
@@ -230,7 +208,7 @@ switch (command) {
 
       // 2. Perform log audit (using our audit_logs.sh script)
       console.log("2. Auditing Pino stdout logs...");
-      const auditLogScript = path.join(WORKSPACE_DIR, '.agents/skills/08-verify-qa/scripts/audit_logs.sh');
+      const auditLogScript = path.join(WORKSPACE_DIR, '.agents/skills/07-verify-qa/scripts/audit_logs.sh');
       const logFile = path.join(WORKSPACE_DIR, 'logs/qa_run.log');
       
       // Ensure logs dir exists
@@ -253,7 +231,7 @@ switch (command) {
       // 3. Metric check
       if (qaSuccess) {
         console.log("3. Verifying Prometheus metrics endpoint...");
-        const checkMetricsScript = path.join(WORKSPACE_DIR, '.agents/skills/08-verify-qa/scripts/check_metrics.sh');
+        const checkMetricsScript = path.join(WORKSPACE_DIR, '.agents/skills/07-verify-qa/scripts/check_metrics.sh');
         try {
           execSync(`bash "${checkMetricsScript}" "http://localhost:3000/metrics"`, { cwd: WORKSPACE_DIR, stdio: 'ignore' });
         } catch (err) {
@@ -272,13 +250,13 @@ switch (command) {
         status: "completed",
         timestamp: new Date().toISOString()
       });
-      qaState.phase = "10-finalize-release";
+      qaState.phase = "09-finalize-release";
       qaState.status = "in_progress";
       writeState(qaState);
       console.log("[QA PASSED] Observability and test suites successfully validated.");
-      console.log("Transitioned to: 10-finalize-release");
+      console.log("Transitioned to: 09-finalize-release");
     } else {
-      qaState.phase = "09-fix-bugs";
+      qaState.phase = "08-fix-bugs";
       qaState.status = "failed";
       writeState(qaState);
       
@@ -291,7 +269,7 @@ switch (command) {
       }
       fs.writeFileSync(bugReportFile, `# BUG: QA verification failure\n\n**Reason**: ${qaFailReason}\n**Timestamp**: ${new Date().toISOString()}\n`, 'utf8');
 
-      console.error(`[QA FAILED] Transitioning to 09-fix-bugs. Failure report written to ${bugReportFile}`);
+      console.error(`[QA FAILED] Transitioning to 08-fix-bugs. Failure report written to ${bugReportFile}`);
       console.error(qaFailReason);
       process.exit(1);
     }
@@ -299,7 +277,7 @@ switch (command) {
 
   case "release":
     const releaseState = readState();
-    if (releaseState.phase !== "10-finalize-release") {
+    if (releaseState.phase !== "09-finalize-release") {
       console.error(`Error: Release command is only allowed in finalize-release phase. Current phase: ${releaseState.phase}`);
       process.exit(1);
     }
@@ -316,7 +294,10 @@ switch (command) {
         files.forEach(f => {
           const filePath = path.join(prdDir, f);
           let content = fs.readFileSync(filePath, 'utf8');
-          content = content.replace(/status:\s*draft/g, 'status: done').replace(/status:\s*in_progress/g, 'status: done');
+          content = content.replace(/status:\s*(?:draft|in_progress)/gi, 'status: done');
+          // Update task statuses inside the file as well
+          content = content.replace(/status:\s*(?:todo|in_progress|staged)/gi, 'status: done');
+          content = content.replace(/- \[(?:\s|\/)\]/g, '- [x]');
           fs.writeFileSync(filePath, content, 'utf8');
         });
       }

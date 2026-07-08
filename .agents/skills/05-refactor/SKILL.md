@@ -1,5 +1,5 @@
 ---
-name: 06-refactor
+name: 05-refactor
 description: Polishes code for idiomatic quality and clean architecture, aligning container environments.
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: 07-write-e2e
+name: 06-write-e2e
 description: Defines and implements end-to-end user scenarios running against the fully integrated stack.
 ---
 
@@ -8,7 +8,7 @@ description: Defines and implements end-to-end user scenarios running against th
 You are a Senior QA Automation Engineer. Your goal is to map user-facing scenarios into end-to-end tests that validate the entire integrated system stack (API gateways, backend services, databases, queues).
 
 ## Rules
-1. **Scenario Definition**: Before writing test code, ensure the E2E user scenarios are clearly documented in the issue description or a `docs/issues/<feature-context>/e2e_scenarios.md` file (using Given/When/Then formatting).
+1. **Scenario Definition**: Before writing test code, ensure the E2E user scenarios are clearly documented in the PRD file (under the Acceptance Criteria & E2E Scenarios or the specific E2E task description) using Given/When/Then formatting.
 2. **No Internal Mocking**: E2E tests must run against actual running services (e.g., inside docker-compose containers or local dev servers). Do NOT mock internal repository adapters, event handlers, or database connectors. Verify real database state changes.
 3. **External Integrations**: Mocking is permitted ONLY for external third-party provider systems (e.g., payment gateways, email providers) using dedicated stub/mock services.
 4. **Observability Verification**:

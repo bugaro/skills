@@ -31,11 +31,11 @@ node .agents/scripts/sdlc.js transition
 ```
 
 #### 4. Run QA Audit Loop
-Performs a deep QA audit (intended for phase `08-verify-qa`):
+Performs a deep QA audit (intended for phase `07-verify-qa`):
 1. Runs the entire testing suite (unit, integration, E2E).
 2. Audits Pino JSON logs for `WARN` or `ERROR` levels and unhandled exceptions (via `audit_logs.sh`).
 3. Verifies Prometheus `/metrics` availability (via `check_metrics.sh`).
-On success, transitions directly to `10-finalize-release`. On failure, writes a bug report and shifts state to `09-fix-bugs`.
+On success, transitions directly to `09-finalize-release`. On failure, writes a bug report and shifts state to `08-fix-bugs`.
 ```bash
 node .agents/scripts/sdlc.js qa-run
 ```
@@ -56,7 +56,7 @@ Example schema:
 ```json
 {
   "feature": "user-auth",
-  "phase": "04-write-tdd",
+  "phase": "03-write-tdd",
   "status": "in_progress",
   "history": [
     {
